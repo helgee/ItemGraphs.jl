@@ -23,6 +23,9 @@ struct D <: Item end
     @test ItemGraphs.getitem(g, 3) == C()
     @test ItemGraphs.getitem(g, 4) == D()
 
+    @test getpath(g, A(), C()) == [A(), B(), C()]
+    @test getpath(g, A(), D()) == [A(), B(), D()]
+
     g = ItemGraph{Int}()
     add_edge!(g, 101, 202)
     add_edge!(g, 202, 303)
@@ -36,4 +39,7 @@ struct D <: Item end
     @test ItemGraphs.getitem(g, 2) == 202
     @test ItemGraphs.getitem(g, 3) == 303
     @test ItemGraphs.getitem(g, 4) == 404
+
+    @test getpath(g, 101, 303) == [101, 202, 303]
+    @test getpath(g, 101, 404) == [101, 202, 404]
 end

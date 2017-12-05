@@ -3,7 +3,7 @@ module ItemGraphs
 import LightGraphs: AbstractGraph, DiGraph, add_edge!, add_vertex!, nv,
     dijkstra_shortest_paths, enumerate_paths
 
-export ItemGraph, add_vertex!, add_edge!
+export ItemGraph, add_vertex!, add_edge!, getpath
 
 struct ItemGraph{T,G}
     graph::G
@@ -57,11 +57,14 @@ function all_paths!(graph::ItemGraph)
     end
 end
 
-getitems(graph, ids) = map(x->getitem(graph, x), ids)
-
 function getpath(graph::ItemGraph{T}, from::T, to::T) where T
-    map(x->getitem(graph, x), enumerate_paths(
-        dijkstra_shortest_paths(graph.graph, getid(graph, from)), getid(graph, to)))
+    if graph.recalculate
+        graph.paths[from][to]
+    else
+        origin = getid(graph, from)
+        target = getid(graph, to)
+        getitem.(graph, enumerate_paths(dijkstra_shortest_paths(graph.graph, origin), target))
+    end
 end
 
 end # module
