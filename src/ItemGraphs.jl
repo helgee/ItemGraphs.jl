@@ -25,12 +25,12 @@ ItemGraph{T}(; kwargs...) where {T} = ItemGraph{T}(DiGraph(); kwargs...)
 getid(graph::ItemGraph{T}, item::T) where {T} = graph.items[item]
 getitem(graph::ItemGraph, id) = graph.ids[id]
 
-function add_vertex!(graph::ItemGraph{T}, item::T) where T  
+function add_vertex!(graph::ItemGraph{T}, item::T) where T
     if !haskey(graph.items, item)
         add_vertex!(graph.graph)
         id = nv(graph.graph)
-        merge!(graph.ids, Dict(id=>item))
-        merge!(graph.items, Dict(item=>id))
+        push!(graph.ids, id=>item)
+        push!(graph.items, item=>id)
     end
 end
 
@@ -49,9 +49,9 @@ function all_paths!(graph::ItemGraph)
             origin == target && continue
             path = getitem.(graph, enumerate_paths(d, tid))
             if haskey(graph.paths, origin)
-                merge!(graph.paths[origin], Dict(target=>path))
+                push!(graph.paths[origin], target=>path)
             else
-                merge!(graph.paths, Dict(origin=>Dict(target=>path)))
+                push!(graph.paths, origin=>Dict(target=>path))
             end
         end
     end
