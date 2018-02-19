@@ -42,4 +42,10 @@ struct D <: Item end
 
     @test getpath(g, 101, 303) == [101, 202, 303]
     @test getpath(g, 101, 404) == [101, 202, 404]
+
+    @test_throws ItemGraphException getpath(g, 101, 102)
+    @test_throws ItemGraphException getpath(g, 102, 101)
+
+    add_edge!(g, 505, 606)
+    @test_throws ItemGraphException getpath(g, 101, 505)
 end
