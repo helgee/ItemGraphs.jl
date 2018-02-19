@@ -9,7 +9,7 @@ struct C <: Item end
 struct D <: Item end
 
 @testset "ItemGraphs" begin
-    g = ItemGraph{Item}()
+    g = ItemGraph{Item}(lazy=true)
     add_edge!(g, A(), B())
     add_edge!(g, B(), C())
     add_edge!(g, B(), D())
