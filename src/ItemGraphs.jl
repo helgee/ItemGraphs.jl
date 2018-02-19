@@ -11,21 +11,21 @@ struct ItemGraphException <: Exception
 end
 Base.show(io::IO, ex::ItemGraphException) = print(io, ex.msg)
 
+"""
+    ItemGraph{T}([graph]; lazy=false)
+
+Create a new ItemGraph with items of type `T` based on a `graph` from `LightGraphs`.
+`graph` can be omitted and a `DiGraph` will be used by default.
+If `lazy` is set to true, the paths between items will be computed on-demand when
+[`getpath`](@ref) is called.
+Otherwise all paths recomputed whenever a new edge is inserted.
+"""
 struct ItemGraph{T,G}
     graph::G
     ids::Dict{Int,T}
     items::Dict{T,Int}
     paths::Dict{T,Dict{T,Vector{T}}}
     lazy::Bool
-    """
-        ItemGraph{T}([graph]; lazy=false)
-
-    Create a new ItemGraph with items of type `T` based on a `graph` from `LightGraphs`.
-    `graph` can be omitted and a `DiGraph` will be used by default.
-    If `lazy` is set to true, the paths between items will be computed on-demand when
-    [`getpath`](@ref) is called.
-    Otherwise all paths recomputed whenever a new edge is inserted.
-    """
     ItemGraph{T}(graph::G; lazy = false) where {T,G <: AbstractGraph} = new{T,G}(graph,
         Dict{Int,T}(),
         Dict{T,Int}(),
