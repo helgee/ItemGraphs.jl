@@ -2,7 +2,7 @@
 
 *Shortest paths between items*
 
-*ItemGraphs* is a simple wrapper around [LightGraphs](https://github.com/JuliaGraphs/LightGraphs.jl) that enables my most common use case for graph-like data structures:
+**ItemGraphs** is a simple wrapper around [LightGraphs](https://github.com/JuliaGraphs/LightGraphs.jl) that enables my most common use case for graph-like data structures:
 I have a collection of items that are in relations between each other and I want to get the shortest path between two items. That's it!
 
 ## Installation
