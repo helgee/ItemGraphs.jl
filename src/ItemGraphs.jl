@@ -20,15 +20,17 @@ If `lazy` is set to true, the paths between items will be computed on-demand whe
 [`getpath`](@ref) is called.
 Otherwise all paths recomputed whenever a new edge is inserted.
 """
-struct ItemGraph{T,G}
+struct ItemGraph{T,S,G}
     graph::G
     ids::Dict{Int,T}
     items::Dict{T,Int}
+    edges::Dict{Int,Dict{Int,S}}
     paths::Dict{T,Dict{T,Vector{T}}}
     lazy::Bool
-    ItemGraph{T}(graph::G; lazy = false) where {T,G <: AbstractGraph} = new{T,G}(graph,
+    ItemGraph{T}(graph::G; lazy = false, edgetype=Int) where {T,G <: AbstractGraph} = new{T,edgetype,G}(graph,
         Dict{Int,T}(),
         Dict{T,Int}(),
+        Dict{Int,Dict{Int,edgetype}}(),
         Dict{T,Dict{T,Vector{T}}}(),
         lazy,)
 end
