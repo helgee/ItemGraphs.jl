@@ -48,4 +48,12 @@ struct D <: Item end
 
     add_edge!(g, 505, 606)
     @test_throws ItemGraphException getpath(g, 101, 505)
+
+    g = ItemGraph{Int,Int}()
+    add_edge!(g, 101, 202, 102)
+    add_edge!(g, 202, 303, 203)
+    add_edge!(g, 202, 404, 204)
+    @test getedge(g, 101, 202) == 102
+    @test getedges(g, 101, 303) == [102, 203]
+    @test getedges(g, 101, 404) == [102, 204]
 end

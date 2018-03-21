@@ -4,7 +4,7 @@ import LightGraphs: AbstractGraph, DiGraph, add_edge!, add_vertex!, nv,
     dijkstra_shortest_paths, enumerate_paths, has_vertex, has_path
 
 export ItemGraph, add_vertex!, add_edge!, getpath, has_vertex, has_path,
-    ItemGraphException
+    ItemGraphException, getedge, getedges
 
 struct ItemGraphException <: Exception
     msg::String
@@ -36,6 +36,7 @@ struct ItemGraph{T,S,G}
 end
 
 ItemGraph{T}(; kwargs...) where {T} = ItemGraph{T,Float64}(DiGraph(); kwargs...)
+ItemGraph{T, S}(; kwargs...) where {T, S} = ItemGraph{T,S}(DiGraph(); kwargs...)
 
 getid(graph::ItemGraph{T}, item::T) where {T} = graph.items[item]
 getitem(graph::ItemGraph, id) = graph.ids[id]
@@ -79,6 +80,28 @@ function add_edge!(graph::ItemGraph{T}, from::T, to::T) where T
 
     !graph.lazy && calculate_paths!(graph)
     nothing
+end
+
+function add_edge!(graph::ItemGraph{T,S}, from::T, to::T, edge::S) where {T, S}
+    add_edge!(graph, from, to)
+    origin = getid(graph, from)
+    target = getid(graph, to)
+    edges = get!(graph.edges, origin, Dict{Int,S}())
+    push!(edges, target => edge)
+    nothing
+end
+
+function getedge(graph::ItemGraph{T}, from::T, to::T) where T
+    graph.edges[getid(graph, from)][getid(graph, to)]
+end
+
+function getedges(graph::ItemGraph{T,S}, from::T, to::T) where {T, S}
+    path = map(x -> getid(graph, x), getpath(graph, from, to))
+    edges = Vector{S}(length(path) - 1)
+    for i in eachindex(edges)
+        edges[i] = graph.edges[path[i]][path[i+1]]
+    end
+    edges
 end
 
 """
