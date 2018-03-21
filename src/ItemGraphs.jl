@@ -27,15 +27,15 @@ struct ItemGraph{T,S,G}
     edges::Dict{Int,Dict{Int,S}}
     paths::Dict{T,Dict{T,Vector{T}}}
     lazy::Bool
-    ItemGraph{T}(graph::G; lazy = false, edgetype=Int) where {T,G <: AbstractGraph} = new{T,edgetype,G}(graph,
+    ItemGraph{T,S}(graph::G; lazy = false) where {T, S, G <: AbstractGraph} = new{T,S,G}(graph,
         Dict{Int,T}(),
         Dict{T,Int}(),
-        Dict{Int,Dict{Int,edgetype}}(),
+        Dict{Int,Dict{Int,S}}(),
         Dict{T,Dict{T,Vector{T}}}(),
         lazy,)
 end
 
-ItemGraph{T}(; kwargs...) where {T} = ItemGraph{T}(DiGraph(); kwargs...)
+ItemGraph{T}(; kwargs...) where {T} = ItemGraph{T,Float64}(DiGraph(); kwargs...)
 
 getid(graph::ItemGraph{T}, item::T) where {T} = graph.items[item]
 getitem(graph::ItemGraph, id) = graph.ids[id]
