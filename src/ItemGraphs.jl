@@ -3,8 +3,8 @@ module ItemGraphs
 import LightGraphs: AbstractGraph, DiGraph, add_edge!, add_vertex!, nv,
     dijkstra_shortest_paths, enumerate_paths, has_vertex, has_path
 
-export ItemGraph, add_vertex!, add_edge!, getpath, has_vertex, has_path,
-    ItemGraphException, getedge, getedges
+export ItemGraph, add_vertex!, add_edge!, items, has_vertex, has_path,
+    ItemGraphException, edgeitem, edgeitems
 
 struct ItemGraphException <: Exception
     msg::String
@@ -12,25 +12,27 @@ end
 Base.show(io::IO, ex::ItemGraphException) = print(io, ex.msg)
 
 """
-    ItemGraph{T}([graph]; lazy=false)
+    ItemGraph{T,S}([graph]; lazy=false)
 
 Create a new ItemGraph with items of type `T` based on a `graph` from `LightGraphs`.
-`graph` can be omitted and a `DiGraph` will be used by default.
+Items of type `S` can be assigned to the edges of the graph, this type can be omitted
+and will be `Float64` by default.
+`graph` can be omitted as well and a `DiGraph` will be used by default.
 If `lazy` is set to true, the paths between items will be computed on-demand when
-[`getpath`](@ref) is called.
-Otherwise all paths recomputed whenever a new edge is inserted.
+[`items`](@ref) is called.
+Otherwise all paths are recomputed whenever a new edge is inserted.
 """
 struct ItemGraph{T,S,G}
     graph::G
     ids::Dict{Int,T}
     items::Dict{T,Int}
-    edges::Dict{Int,Dict{Int,S}}
+    edges::Dict{T,Dict{T,S}}
     paths::Dict{T,Dict{T,Vector{T}}}
     lazy::Bool
     ItemGraph{T,S}(graph::G; lazy = false) where {T, S, G <: AbstractGraph} = new{T,S,G}(graph,
         Dict{Int,T}(),
         Dict{T,Int}(),
-        Dict{Int,Dict{Int,S}}(),
+        Dict{T,Dict{T,S}}(),
         Dict{T,Dict{T,Vector{T}}}(),
         lazy,)
 end
@@ -69,34 +71,40 @@ function add_vertex!(graph::ItemGraph{T}, item::T) where T
 end
 
 """
-    add_edge!(graph, from, to)
+    add_edge!(graph, from, to, [item])
 
-Add an edge between `from` and `to` to `graph`.
+Add an edge between `from` and `to` to `graph`. Optionally assign an item
+to the edge.
 """
-function add_edge!(graph::ItemGraph{T}, from::T, to::T) where T
+function add_edge!(graph::ItemGraph{T,S}, from::T, to::T,
+        item::S=zero(S)) where {T, S}
     add_vertex!(graph, from)
     add_vertex!(graph, to)
     add_edge!(graph.graph, getid(graph, from), getid(graph, to))
 
     !graph.lazy && calculate_paths!(graph)
+
+    edges = get!(graph.edges, from, Dict{Int,S}())
+    push!(edges, to => item)
     nothing
 end
 
-function add_edge!(graph::ItemGraph{T,S}, from::T, to::T, edge::S) where {T, S}
-    add_edge!(graph, from, to)
-    origin = getid(graph, from)
-    target = getid(graph, to)
-    edges = get!(graph.edges, origin, Dict{Int,S}())
-    push!(edges, target => edge)
-    nothing
+"""
+    edgeitem(graph, from, to)
+
+Get the item assigned to the edge between `from` and `to`.
+"""
+function edgeitem(graph::ItemGraph{T}, from::T, to::T) where T
+    graph.edges[from][to]
 end
 
-function getedge(graph::ItemGraph{T}, from::T, to::T) where T
-    graph.edges[getid(graph, from)][getid(graph, to)]
-end
+"""
+    edgeitems(graph, from, to)
 
-function getedges(graph::ItemGraph{T,S}, from::T, to::T) where {T, S}
-    path = map(x -> getid(graph, x), getpath(graph, from, to))
+Get all items assigned to the edges between `from` and `to`.
+"""
+function edgeitems(graph::ItemGraph{T,S}, from::T, to::T) where {T, S}
+    path = calculate_path(graph, from, to)
     edges = Vector{S}(length(path) - 1)
     for i in eachindex(edges)
         edges[i] = graph.edges[path[i]][path[i+1]]
@@ -105,22 +113,20 @@ function getedges(graph::ItemGraph{T,S}, from::T, to::T) where {T, S}
 end
 
 """
-    getpath(graph, from, to)
+    items(graph, from, to)
 
-Get the path between the items `from` and `to`.
+Get the items on the path between and including `from` and `to`.
 Will throw an `ItemGraphsException` if either `from` or `to` are not a part of `graph` or if there
 is no path between them.
 """
-function getpath(graph, from, to)
+function items(graph, from, to)
     for vertex in (from, to)
         !has_vertex(graph, vertex) && throw(ItemGraphException("There is no vertex '$vertex'."))
     end
 
     !has_path(graph, from, to) && throw(ItemGraphException("There is no path between '$from' and '$to'."))
 
-    graph.lazy && return calculate_path(graph, from, to)
-
-    graph.paths[from][to]
+    calculate_path(graph, from, to)
 end
 
 function calculate_paths!(graph::ItemGraph{T}) where T
@@ -136,6 +142,8 @@ function calculate_paths!(graph::ItemGraph{T}) where T
 end
 
 function calculate_path(graph::ItemGraph{T}, from, to) where T
+    !graph.lazy && return graph.paths[from][to]
+
     origin = getid(graph, from)
     target = getid(graph, to)
 

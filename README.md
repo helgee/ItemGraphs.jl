@@ -32,7 +32,16 @@ add_edge!(g, 202, 303)
 add_edge!(g, 202, 404)
 
 # Get the shortest path, returns [101, 202, 404]
-getpath(g, 101, 404)
+items(g, 101, 404)
+
+# Create an ItemGraph that has integers as vertices and floats as edges
+g = ItemGraph{Int, Float64}()
+add_edge!(g, 101, 202, 1.0)
+add_edge!(g, 202, 303, 2.0)
+add_edge!(g, 202, 404) # The item assigned to the edge will be zero by default
+
+# Get all items on the edges between 101 and 404, returns [1.0, 0.0]
+edgeitems(g, 101, 404)
 ```
 
 ## Documentation

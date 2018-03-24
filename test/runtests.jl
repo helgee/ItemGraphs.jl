@@ -23,8 +23,8 @@ struct D <: Item end
     @test ItemGraphs.getitem(g, 3) == C()
     @test ItemGraphs.getitem(g, 4) == D()
 
-    @test getpath(g, A(), C()) == [A(), B(), C()]
-    @test getpath(g, A(), D()) == [A(), B(), D()]
+    @test items(g, A(), C()) == [A(), B(), C()]
+    @test items(g, A(), D()) == [A(), B(), D()]
 
     g = ItemGraph{Int}()
     add_edge!(g, 101, 202)
@@ -40,20 +40,21 @@ struct D <: Item end
     @test ItemGraphs.getitem(g, 3) == 303
     @test ItemGraphs.getitem(g, 4) == 404
 
-    @test getpath(g, 101, 303) == [101, 202, 303]
-    @test getpath(g, 101, 404) == [101, 202, 404]
+    @test items(g, 101, 303) == [101, 202, 303]
+    @test items(g, 101, 404) == [101, 202, 404]
+    @test edgeitems(g, 101, 404) == [0.0, 0.0]
 
-    @test_throws ItemGraphException getpath(g, 101, 102)
-    @test_throws ItemGraphException getpath(g, 102, 101)
+    @test_throws ItemGraphException items(g, 101, 102)
+    @test_throws ItemGraphException items(g, 102, 101)
 
     add_edge!(g, 505, 606)
-    @test_throws ItemGraphException getpath(g, 101, 505)
+    @test_throws ItemGraphException items(g, 101, 505)
 
     g = ItemGraph{Int,Int}()
     add_edge!(g, 101, 202, 102)
     add_edge!(g, 202, 303, 203)
     add_edge!(g, 202, 404, 204)
-    @test getedge(g, 101, 202) == 102
-    @test getedges(g, 101, 303) == [102, 203]
-    @test getedges(g, 101, 404) == [102, 204]
+    @test edgeitem(g, 101, 202) == 102
+    @test edgeitems(g, 101, 303) == [102, 203]
+    @test edgeitems(g, 101, 404) == [102, 204]
 end
