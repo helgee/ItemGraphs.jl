@@ -11,6 +11,7 @@ makedocs(
 )
 
 deploydocs(
+    julia = "nightly",
     repo = "github.com/helgee/ItemGraphs.jl.git",
     target = "build",
     deps = nothing,
