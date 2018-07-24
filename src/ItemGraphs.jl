@@ -105,7 +105,7 @@ Get all items assigned to the edges between `from` and `to`.
 """
 function edgeitems(graph::ItemGraph{T,S}, from::T, to::T) where {T, S}
     path = calculate_path(graph, from, to)
-    edges = Vector{S}(length(path) - 1)
+    edges = Vector{S}(undef, length(path) - 1)
     for i in eachindex(edges)
         edges[i] = graph.edges[path[i]][path[i+1]]
     end
@@ -134,7 +134,7 @@ function calculate_paths!(graph::ItemGraph{T}) where T
         d = dijkstra_shortest_paths(graph.graph, oid)
         for (target, tid) in graph.items
             origin == target && continue
-            path = getitem.(graph, enumerate_paths(d, tid))
+            path = getitem.(Ref(graph), enumerate_paths(d, tid))
             paths = get!(graph.paths, origin, Dict{T,Vector{T}}())
             push!(paths, target => path)
         end
@@ -147,7 +147,7 @@ function calculate_path(graph::ItemGraph{T}, from, to) where T
     origin = getid(graph, from)
     target = getid(graph, to)
 
-    getitem.(graph, enumerate_paths(dijkstra_shortest_paths(graph.graph, origin), target))::Vector{T}
+    getitem.(Ref(graph), enumerate_paths(dijkstra_shortest_paths(graph.graph, origin), target))::Vector{T}
 end
 
 end # module

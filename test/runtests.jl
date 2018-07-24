@@ -1,5 +1,5 @@
 using ItemGraphs
-using Base.Test
+using Test
 
 abstract type Item end
 
