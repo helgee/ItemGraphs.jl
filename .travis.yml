@@ -1,27 +1,30 @@
-## Documentation: http://docs.travis-ci.com/user/languages/julia/
+# Documentation: http://docs.travis-ci.com/user/languages/julia/
 language: julia
 os:
   - linux
-  # - osx
+  - osx
 julia:
-  - 0.6
+  - 1.0
+  - 1.1
   - nightly
+matrix:
+  allow_failures:
+    - julia: nightly
 notifications:
   email: false
 git:
   depth: 99999999
-
-matrix:
-  allow_failures:
-  - julia: nightly
-
-## uncomment the following lines to override the default test script
-#script:
-#  - julia -e 'Pkg.clone(pwd()); Pkg.build("ItemGraphs"); Pkg.test("ItemGraphs"; coverage=true)'
 after_success:
-  - julia -e 'cd(Pkg.dir("ItemGraphs")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
-  - julia -e 'cd(Pkg.dir("ItemGraphs")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
-  - julia -e 'Pkg.add("Documenter")'
-  - julia -e 'cd(Pkg.dir("ItemGraphs")); include(joinpath("docs", "make.jl"))'
-
-
+  - if [[ $TRAVIS_JULIA_VERSION = 1.1 ]] && [[ $TRAVIS_OS_NAME = linux ]]; then
+    julia --project=test/coverage -e 'using Pkg; Pkg.instantiate();
+    using Coverage; Coveralls.submit(Coveralls.process_folder()); Codecov.submit(Codecov.process_folder())';
+    fi
+jobs:
+  include:
+    - stage: Documentation
+      julia: 1.0
+      os: linux
+      script:
+        - julia --project=docs -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+        - julia --project=docs --color=yes docs/make.jl
+      after_success: skip

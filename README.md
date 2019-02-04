@@ -2,18 +2,20 @@
 
 *Shortest paths between items*
 
-[![Build Status Unix][travis-badge]][travis-url] [![Build Status Windows][av-badge]][av-url] [![Coveralls][coveralls-badge]][coveralls-url] [![Codecov][codecov-badge]][codecov-url] [![Docs Stable][docs-badge-stable]][docs-url-stable] [![Docs Latest][docs-badge-latest]][docs-url-latest]
+[![Build Status Unix][travis-badge]][travis-url] [![Build Status Windows][av-badge]][av-url] [![Coveralls][coveralls-badge]][coveralls-url] [![Codecov][codecov-badge]][codecov-url] [![Docs Stable][docs-badge-stable]][docs-url-stable] [![Docs Latest][docs-badge-dev]][docs-url-dev]
 
-**ItemGraphs** is a simple wrapper around [LightGraphs](https://github.com/JuliaGraphs/LightGraphs.jl) that enables my most common
-use case for graph-like data structures:
-I have a collection of items that are in relations between each other and I want to get the shortest path between two items. That's it!
+**ItemGraphs** is a simple wrapper around [LightGraphs](https://github.com/JuliaGraphs/LightGraphs.jl) that
+enables my most common use case for graph-like data structures:
+I have a collection of items that are in relations between each other and I want to get the shortest path
+between two items.
+That's it!
 
 ## Installation
 
 The package can be installed through Julia's package manager:
 
 ```julia
-Pkg.add("ItemGraphs")
+julia> import Pkg; Pkg.add("ItemGraphs")
 ```
 
 ## Quickstart
@@ -57,7 +59,7 @@ information.
 [coveralls-url]: https://coveralls.io/github/helgee/ItemGraphs.jl?branch=master
 [codecov-badge]: http://codecov.io/github/helgee/ItemGraphs.jl/coverage.svg?branch=master
 [codecov-url]: http://codecov.io/github/helgee/ItemGraphs.jl?branch=master
-[docs-badge-latest]: https://img.shields.io/badge/docs-latest-blue.svg
-[docs-url-latest]: https://helgee.github.io/ItemGraphs.jl/latest
+[docs-badge-dev]: https://img.shields.io/badge/docs-dev-blue.svg
+[docs-url-dev]: https://helgee.github.io/ItemGraphs.jl/dev/
 [docs-badge-stable]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-url-stable]: https://helgee.github.io/ItemGraphs.jl/stable
+[docs-url-stable]: https://helgee.github.io/ItemGraphs.jl/stable/

@@ -1,19 +1,18 @@
 using Documenter, ItemGraphs
 
 makedocs(
-    format = :html,
-    sitename = "ItemGraphs.jl",
-    authors = "Helge Eichhorn",
-    pages = [
-        "Home" => "index.md",
-        "API" => "api.md",
-    ],
+    format = Documenter.HTML(
+		prettyurls = get(ENV, "CI", nothing) == "true",
+	),
+	sitename = "ItemGraphs.jl",
+	authors = "Helge Eichhorn and the ItemGraphs.jl contributors",
+	pages = [
+		"Home" => "index.md",
+		"API" => "api.md",
+	],
 )
 
 deploydocs(
-    julia = "nightly",
-    repo = "github.com/helgee/ItemGraphs.jl.git",
-    target = "build",
-    deps = nothing,
-    make = nothing,
+	repo = "github.com/JuliaAstro/ItemGraphs.jl.git",
+	target = "build",
 )
