@@ -1,7 +1,7 @@
 var documenterSearchIndex = {"docs": [
 
 {
-    "location": "index.html#",
+    "location": "#",
     "page": "Home",
     "title": "Home",
     "category": "page",
@@ -9,7 +9,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#ItemGraphs-1",
+    "location": "#ItemGraphs-1",
     "page": "Home",
     "title": "ItemGraphs",
     "category": "section",
@@ -17,7 +17,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#Installation-1",
+    "location": "#Installation-1",
     "page": "Home",
     "title": "Installation",
     "category": "section",
@@ -25,7 +25,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#Quickstart-1",
+    "location": "#Quickstart-1",
     "page": "Home",
     "title": "Quickstart",
     "category": "section",
@@ -33,7 +33,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#",
+    "location": "api/#",
     "page": "API",
     "title": "API",
     "category": "page",
@@ -41,15 +41,15 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#ItemGraphs.ItemGraph",
+    "location": "api/#ItemGraphs.ItemGraph",
     "page": "API",
     "title": "ItemGraphs.ItemGraph",
     "category": "type",
-    "text": "ItemGraph{T,S}([graph]; lazy=false)\n\nCreate a new ItemGraph with items of type T based on a graph from LightGraphs. Items of type S can be assigned to the edges of the graph, this type can be omitted and will be Float64 by default. graph can be omitted as well and a DiGraph will be used by default. If lazy is set to true, the paths between items will be computed on-demand when items is called. Otherwise all paths are recomputed whenever a new edge is inserted.\n\n\n\n\n\n"
+    "text": "ItemGraph{T,S}([graph])\n\nCreate a new ItemGraph with items of type T based on a graph from LightGraphs. Items of type S can be assigned to the edges of the graph, this type can be omitted and will be Float64 by default. graph can be omitted as well and a DiGraph will be used by default. Otherwise all paths are recomputed whenever a new edge is inserted.\n\n\n\n\n\n"
 },
 
 {
-    "location": "api.html#ItemGraphs.edgeitem-Union{Tuple{T}, Tuple{ItemGraph{T,S,G} where G where S,T,T}} where T",
+    "location": "api/#ItemGraphs.edgeitem-Union{Tuple{T}, Tuple{ItemGraph{T,S,G} where G where S,T,T}} where T",
     "page": "API",
     "title": "ItemGraphs.edgeitem",
     "category": "method",
@@ -57,23 +57,23 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#ItemGraphs.edgeitems-Union{Tuple{S}, Tuple{T}, Tuple{ItemGraph{T,S,G} where G,T,T}} where S where T",
+    "location": "api/#ItemGraphs.edgeitems-Union{Tuple{S}, Tuple{T}, Tuple{ItemGraph{T,S,G} where G,T,T}} where S where T",
     "page": "API",
     "title": "ItemGraphs.edgeitems",
     "category": "method",
-    "text": "edgeitems(graph, from, to)\n\nGet all items assigned to the edges between from and to.\n\n\n\n\n\n"
+    "text": "edgeitems(graph, from, to)\n\nGet all items assigned to the edges between from and to. Will return an empty array if either from or to are not a part of graph or if there is no path between them.\n\n\n\n\n\n"
 },
 
 {
-    "location": "api.html#ItemGraphs.items-Tuple{Any,Any,Any}",
+    "location": "api/#ItemGraphs.items-Union{Tuple{T}, Tuple{ItemGraph{T,S,G} where G where S,Any,Any}} where T",
     "page": "API",
     "title": "ItemGraphs.items",
     "category": "method",
-    "text": "items(graph, from, to)\n\nGet the items on the path between and including from and to. Will throw an ItemGraphsException if either from or to are not a part of graph or if there is no path between them.\n\n\n\n\n\n"
+    "text": "items(graph, from, to)\n\nGet the items on the path between and including from and to. Will return an empty array if either from or to are not a part of graph or if there is no path between them.\n\n\n\n\n\n"
 },
 
 {
-    "location": "api.html#LightGraphs.SimpleGraphs.add_edge!-Union{Tuple{S}, Tuple{T}, Tuple{ItemGraph{T,S,G} where G,T,T}, Tuple{ItemGraph{T,S,G} where G,T,T,S}} where S where T",
+    "location": "api/#LightGraphs.SimpleGraphs.add_edge!-Union{Tuple{S}, Tuple{T}, Tuple{ItemGraph{T,S,G} where G,T,T}, Tuple{ItemGraph{T,S,G} where G,T,T,S}} where S where T",
     "page": "API",
     "title": "LightGraphs.SimpleGraphs.add_edge!",
     "category": "method",
@@ -81,7 +81,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#LightGraphs.SimpleGraphs.add_vertex!-Union{Tuple{T}, Tuple{ItemGraph{T,S,G} where G where S,T}} where T",
+    "location": "api/#LightGraphs.SimpleGraphs.add_vertex!-Union{Tuple{T}, Tuple{ItemGraph{T,S,G} where G where S,T}} where T",
     "page": "API",
     "title": "LightGraphs.SimpleGraphs.add_vertex!",
     "category": "method",
@@ -89,7 +89,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#LightGraphs.has_path-Tuple{ItemGraph,Any,Any}",
+    "location": "api/#LightGraphs.has_path-Tuple{ItemGraph,Any,Any}",
     "page": "API",
     "title": "LightGraphs.has_path",
     "category": "method",
@@ -97,7 +97,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#LightGraphs.has_vertex-Tuple{ItemGraph,Any}",
+    "location": "api/#LightGraphs.has_vertex-Tuple{ItemGraph,Any}",
     "page": "API",
     "title": "LightGraphs.has_vertex",
     "category": "method",
@@ -105,7 +105,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#API-1",
+    "location": "api/#API-1",
     "page": "API",
     "title": "API",
     "category": "section",
