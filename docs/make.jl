@@ -13,6 +13,6 @@ makedocs(
 )
 
 deploydocs(
-	repo = "github.com/JuliaAstro/ItemGraphs.jl.git",
-	target = "build",
+    repo = "github.com/helgee/ItemGraphs.jl.git",
+    target = "build",
 )
