@@ -9,7 +9,7 @@ struct C <: Item end
 struct D <: Item end
 
 @testset "ItemGraphs" begin
-    g = ItemGraph{Item}(lazy=true)
+    g = ItemGraph{Item}()
     add_edge!(g, A(), B())
     add_edge!(g, B(), C())
     add_edge!(g, B(), D())
@@ -44,11 +44,11 @@ struct D <: Item end
     @test items(g, 101, 404) == [101, 202, 404]
     @test edgeitems(g, 101, 404) == [0.0, 0.0]
 
-    @test_throws ItemGraphException items(g, 101, 102)
-    @test_throws ItemGraphException items(g, 102, 101)
+    @test items(g, 101, 102) == []
+    @test items(g, 102, 101) == []
 
     add_edge!(g, 505, 606)
-    @test_throws ItemGraphException items(g, 101, 505)
+    @test items(g, 101, 505) == []
 
     g = ItemGraph{Int,Int}()
     add_edge!(g, 101, 202, 102)
@@ -57,4 +57,5 @@ struct D <: Item end
     @test edgeitem(g, 101, 202) == 102
     @test edgeitems(g, 101, 303) == [102, 203]
     @test edgeitems(g, 101, 404) == [102, 204]
+    @test edgeitems(g, 101, 102) == []
 end
